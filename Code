@@ -15,7 +15,7 @@ def parse_input(input_str):
         pass
     return None
 
-print("Welcome to the Conner's Dice Tray!")
+print("Welcome to Conner's Dice Tray!")
 while True:
     choice = input("Enter the dice roll in the format 'NdX', or 'Quit' to quit: ")
     if choice.lower() == 'quit':
