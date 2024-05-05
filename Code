@@ -1,0 +1,31 @@
+import random
+
+def roll_dice(num_dice, sides):
+    if sides in [4, 6, 8, 10, 12, 20, 100]:
+        return [random.randint(1, sides) for _ in range(num_dice)]
+    else:
+        return "Please choose one of the following: 4, 6, 8, 10, 12, 20, 100."
+
+def parse_input(input_str):
+    try:
+        num_dice, sides = map(int, input_str.split('d'))
+        if num_dice > 0 and sides in [4, 6, 8, 10, 12, 20, 100]:
+            return num_dice, sides
+    except ValueError:
+        pass
+    return None
+
+print("Welcome to the Conner's Dice Tray!")
+while True:
+    choice = input("Enter the dice roll in the format 'NdX', or 'Quit' to quit: ")
+    if choice.lower() == 'quit':
+        print("Goodbye!")
+        break
+    else:
+        parsed_input = parse_input(choice)
+        if parsed_input:
+            num_dice, sides = parsed_input
+            results = roll_dice(num_dice, sides)
+            print(f"You rolled {num_dice} {sides}-sided dice and got: {results}")
+        else:
+            print("Invalid input. Please enter the roll in the format 'NdX' or 'quit' to quit.")
