@@ -9,21 +9,23 @@ class DiceRollerApp:
         self.master = master
         self.master.title("Dice Roller")
         self.dice_rolls = []
+        self.history_window = None  # Add history_window attribute and initialize it to None
         self.show_main_window()
 
     def show_main_window(self):
         self.main_window = MainWindow(self)
 
     def show_history_window(self):
-        self.history_window = HistoryWindow(self)
+        if self.history_window is None:  # Check if history_window is None
+            self.history_window = HistoryWindow(self)
 
 class MainWindow:
     def __init__(self, app):
         self.app = app
         self.master = app.master
 
-        self.homepage_image = Image.open("homepagedice.jpeg")
-        self.homepage_image = self.homepage_image.resize((200, 200), Image.ANTIALIAS)
+        self.homepage_image = Image.open("homepagedice.jpg")
+        self.homepage_image = self.homepage_image.resize((200, 200), Image.LANCZOS)
         self.homepage_photo = ImageTk.PhotoImage(self.homepage_image)
         self.label_image = ttk.Label(self.master, image=self.homepage_photo)
         self.label_image.grid(row=0, column=0, columnspan=4)
@@ -78,7 +80,8 @@ class MainWindow:
         self.app.dice_rolls.append((dice_type, rolls, modifier, total))
 
         result_text = f"{dice_type}: Rolls: {rolls}, Modifier: {modifier}, Total: {total}"
-        self.app.history_window.add_roll_result(result_text)
+        if self.app.history_window:
+            self.app.history_window.add_roll_result(result_text)
 
     def show_history_window(self):
         self.app.show_history_window()
@@ -91,12 +94,6 @@ class HistoryWindow:
 
         self.label_history = ttk.Label(self.master, text="Roll History")
         self.label_history.grid(row=0, column=0, columnspan=2, pady=5)
-
-        self.history_image = Image.open("history.jpeg")
-        self.history_image = self.history_image.resize((200, 200), Image.ANTIALIAS)
-        self.history_photo = ImageTk.PhotoImage(self.history_image)
-        self.label_image = ttk.Label(self.master, image=self.history_photo)
-        self.label_image.grid(row=1, column=0, columnspan=2)
 
         self.button_back = ttk.Button(self.master, text="Back", command=self.close_window)
         self.button_back.grid(row=2, column=0, columnspan=2, pady=5)
